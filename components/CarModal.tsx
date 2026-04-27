@@ -10,36 +10,49 @@ interface Props {
 
 const INFO_SECTIONS = [
   {
-    icon: "menu_book",
-    iconColor: "text-ocean-deep",
-    bg: "bg-sky-soft",
-    title: "Service Book",
+    title: "Carte service",
     description:
-      "Full service history, maintenance records and original documentation are available upon request. Contact us for a complete dossier.",
+      "Istoricul complet de service, evidența întreținerii și documentele originale, disponibile la cerere.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6" />
+        <path d="M9 13h6M9 17h6" />
+      </svg>
+    ),
   },
   {
-    icon: "build",
-    iconColor: "text-amber-500",
-    bg: "bg-amber-50",
-    title: "Wear & Condition Details",
+    title: "Stare și uzură",
     description:
-      "Detailed inspection report including tyre depth, brake pad status, interior wear and bodywork condition available on request.",
+      "Raport detaliat de inspecție: anvelope, plăcuțe de frână, interior și caroserie, fără surprize.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 6v6l4 2" />
+      </svg>
+    ),
   },
   {
-    icon: "local_shipping",
-    iconColor: "text-purple-500",
-    bg: "bg-lavender-light",
-    title: "Transport & Delivery",
+    title: "Transport și livrare",
     description:
-      "We arrange secure door-to-door transport across Europe. Pricing depends on distance and vehicle class. Get in touch for a quote.",
+      "Organizăm transport securizat, din ușă în ușă, în toată Europa. Solicitați o ofertă personalizată.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+        <rect x="1" y="3" width="15" height="13" />
+        <path d="M16 8h4l3 3v5h-7zM5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+      </svg>
+    ),
   },
   {
-    icon: "verified",
-    iconColor: "text-green-600",
-    bg: "bg-mint-dream",
-    title: "Full Verification Report",
+    title: "Raport complet de verificare",
     description:
-      "VIN check, accident history, finance check and multi-point inspection included. Reach out for the complete report.",
+      "Verificare VIN, istoric accidente, control financiar și inspecție tehnică completă, incluse.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>
+    ),
   },
 ];
 
@@ -47,16 +60,15 @@ export default function CarModal({ car, onClose }: Props) {
   const images = car.images?.length ? car.images : [];
   const [current, setCurrent] = useState(0);
 
-  const prev = useCallback(() =>
-    setCurrent((i) => (i === 0 ? images.length - 1 : i - 1)),
+  const prev = useCallback(
+    () => setCurrent((i) => (i === 0 ? images.length - 1 : i - 1)),
     [images.length]
   );
-  const next = useCallback(() =>
-    setCurrent((i) => (i === images.length - 1 ? 0 : i + 1)),
+  const next = useCallback(
+    () => setCurrent((i) => (i === images.length - 1 ? 0 : i + 1)),
     [images.length]
   );
 
-  // Keyboard navigation
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
@@ -67,174 +79,368 @@ export default function CarModal({ car, onClose }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose, prev, next]);
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
-
-  const price = car.priceEur
-    ? `€${car.priceEur.toLocaleString("de-DE")}`
-    : "Price on request";
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ocean-deep/40 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 100,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+        background: "rgba(14, 14, 14, 0.6)",
+        backdropFilter: "blur(8px)",
+      }}
     >
-      <div className="bg-white rounded-[2.5rem] w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-sky-900/20">
-
-        {/* Close button */}
-        <div className="sticky top-0 z-10 flex justify-end p-4 bg-white/80 backdrop-blur-sm rounded-t-[2.5rem]">
+      <div
+        style={{
+          background: "var(--cream)",
+          borderRadius: 8,
+          width: "100%",
+          maxWidth: 760,
+          maxHeight: "90vh",
+          overflowY: "auto",
+          boxShadow: "var(--shadow-lift)",
+          border: "1px solid var(--line)",
+        }}
+      >
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: 16,
+            background: "rgba(245, 241, 234, 0.94)",
+            backdropFilter: "blur(8px)",
+            borderRadius: "8px 8px 0 0",
+          }}
+        >
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-full bg-sky-soft flex items-center justify-center text-ocean-deep hover:bg-sky-200 transition-colors cursor-pointer"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              border: "1px solid var(--line)",
+              background: "var(--paper)",
+              cursor: "pointer",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 16,
+              color: "var(--ink)",
+              fontFamily: "var(--font-sans)",
+            }}
           >
-            <span className="material-symbols-outlined text-xl">close</span>
+            ✕
           </button>
         </div>
 
-        <div className="px-8 pb-8 -mt-4">
-          {/* Image gallery */}
+        <div style={{ padding: "0 36px 36px", marginTop: -8 }}>
           {images.length > 0 ? (
-            <div className="mb-6">
-              {/* Main image */}
-              <div className="relative aspect-[16/10] rounded-[1.5rem] overflow-hidden bg-sky-soft mb-3">
+            <div style={{ marginBottom: 28 }}>
+              <div
+                style={{
+                  position: "relative",
+                  aspectRatio: "16/10",
+                  borderRadius: 8,
+                  overflow: "hidden",
+                  background: "var(--cream-warm)",
+                  marginBottom: 12,
+                }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={images[current]}
-                  alt={`${car.title} — image ${current + 1}`}
-                  className="w-full h-full object-cover"
+                  alt={`${car.title} — ${current + 1}`}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
-                {/* Counter */}
-                <span className="absolute bottom-3 right-4 bg-black/50 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 12,
+                    right: 16,
+                    background: "rgba(14, 14, 14, 0.75)",
+                    color: "var(--cream)",
+                    padding: "4px 12px",
+                    borderRadius: 999,
+                    fontSize: 11,
+                    fontFamily: "var(--font-mono)",
+                    letterSpacing: "0.04em",
+                  }}
+                >
                   {current + 1} / {images.length}
                 </span>
-                {/* Prev / Next */}
                 {images.length > 1 && (
                   <>
                     <button
                       onClick={prev}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors cursor-pointer shadow"
+                      style={{
+                        position: "absolute",
+                        left: 12,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: 36,
+                        height: 36,
+                        borderRadius: "50%",
+                        background: "rgba(245, 241, 234, 0.94)",
+                        border: "1px solid var(--line)",
+                        cursor: "pointer",
+                        fontSize: 16,
+                      }}
                     >
-                      <span className="material-symbols-outlined text-ocean-deep">chevron_left</span>
+                      ‹
                     </button>
                     <button
                       onClick={next}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors cursor-pointer shadow"
+                      style={{
+                        position: "absolute",
+                        right: 12,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        width: 36,
+                        height: 36,
+                        borderRadius: "50%",
+                        background: "rgba(245, 241, 234, 0.94)",
+                        border: "1px solid var(--line)",
+                        cursor: "pointer",
+                        fontSize: 16,
+                      }}
                     >
-                      <span className="material-symbols-outlined text-ocean-deep">chevron_right</span>
+                      ›
                     </button>
                   </>
                 )}
               </div>
-
-              {/* Thumbnails */}
               {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-1">
+                <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
                   {images.map((img, i) => (
                     <button
                       key={i}
                       onClick={() => setCurrent(i)}
-                      className={`shrink-0 w-16 h-12 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
-                        i === current
-                          ? "border-ocean-deep shadow-md"
-                          : "border-transparent opacity-60 hover:opacity-100"
-                      }`}
+                      style={{
+                        flexShrink: 0,
+                        width: 64,
+                        height: 48,
+                        borderRadius: 6,
+                        overflow: "hidden",
+                        border:
+                          i === current ? "2px solid var(--terracotta)" : "1px solid var(--line)",
+                        opacity: i === current ? 1 : 0.65,
+                        cursor: "pointer",
+                        padding: 0,
+                        transition: "all .2s",
+                      }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </button>
                   ))}
                 </div>
               )}
             </div>
           ) : (
-            <div className="aspect-[16/10] rounded-[1.5rem] bg-sky-soft flex items-center justify-center mb-6 text-sky-200">
-              <span className="material-symbols-outlined" style={{ fontSize: "64px" }}>
-                directions_car
-              </span>
+            <div
+              style={{
+                aspectRatio: "16/10",
+                borderRadius: 8,
+                background: "var(--cream-warm)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 28,
+              }}
+            >
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--line-strong)" strokeWidth="1">
+                <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3" />
+                <rect x="9" y="11" width="14" height="10" rx="2" />
+                <circle cx="12" cy="20" r="1" />
+                <circle cx="20" cy="20" r="1" />
+              </svg>
             </div>
           )}
 
-          {/* Title & price */}
-          <h2 className="font-headline font-bold text-2xl text-ocean-deep mb-2 leading-tight">
+          <h2
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: 32,
+              letterSpacing: "-0.025em",
+              lineHeight: 1.1,
+              marginBottom: 12,
+              color: "var(--ink)",
+            }}
+          >
             {car.title}
           </h2>
-          <div className="inline-block bg-buddy-green/20 text-green-700 font-headline font-bold text-2xl px-5 py-1.5 rounded-full mb-6">
-            {price}
-          </div>
 
-          {/* Specs grid */}
-          <div className="grid grid-cols-3 gap-3 mb-8">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 1,
+              background: "var(--line)",
+              border: "1px solid var(--line)",
+              borderRadius: 8,
+              overflow: "hidden",
+              marginBottom: 36,
+            }}
+          >
             {[
-              { icon: "calendar_month", label: car.year ? String(car.year) : null, name: "Year" },
-              { icon: "speed", label: car.km ? `${car.km.toLocaleString("de-DE")} km` : null, name: "Mileage" },
-              { icon: "local_gas_station", label: car.fuel, name: "Fuel" },
-              { icon: "settings", label: car.gearType, name: "Gearbox" },
-              { icon: "bolt", label: car.hp ? `${car.hp} hp` : null, name: "Power" },
-              { icon: "palette", label: car.colour, name: "Colour" },
-              { icon: "door_front", label: car.doors ? `${car.doors} doors` : null, name: "Doors" },
+              { label: "An", value: car.year ? String(car.year) : null },
+              { label: "Rulaj", value: car.km ? `${car.km.toLocaleString("de-DE")} km` : null },
+              { label: "Combustibil", value: car.fuel },
+              { label: "Cutie", value: car.gearType },
+              { label: "Putere", value: car.hp ? `${car.hp} CP` : null },
+              { label: "Culoare", value: car.colour },
+              { label: "Uși", value: car.doors ? `${car.doors}` : null },
             ]
-              .filter((s) => s.label)
+              .filter((s) => s.value)
               .map((s) => (
-                <div key={s.name} className="bg-sky-soft rounded-2xl p-3 text-center">
-                  <span
-                    className="material-symbols-outlined text-ocean-deep block mb-1"
-                    style={{ fontSize: "20px" }}
+                <div
+                  key={s.label}
+                  style={{
+                    background: "var(--paper)",
+                    padding: "16px 18px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: 10,
+                      color: "var(--mute)",
+                      marginBottom: 6,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.16em",
+                      margin: 0,
+                    }}
                   >
-                    {s.icon}
-                  </span>
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-0.5">
-                    {s.name}
+                    {s.label}
                   </p>
-                  <p className="text-sm font-bold text-ocean-deep">{s.label}</p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: 16,
+                      fontWeight: 500,
+                      color: "var(--ink)",
+                      margin: "4px 0 0",
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {s.value}
+                  </p>
                 </div>
               ))}
           </div>
 
-          {/* Info sections */}
-          <div className="space-y-3 mb-8">
+          <div style={{ display: "flex", flexDirection: "column", gap: 1, marginBottom: 36, background: "var(--line)", border: "1px solid var(--line)", borderRadius: 8, overflow: "hidden" }}>
             {INFO_SECTIONS.map((s) => (
-              <div key={s.title} className={`${s.bg} rounded-2xl p-5 flex gap-4 items-start`}>
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
-                  <span className={`material-symbols-outlined ${s.iconColor}`} style={{ fontSize: "20px" }}>
-                    {s.icon}
-                  </span>
+              <div
+                key={s.title}
+                style={{
+                  background: "var(--paper)",
+                  padding: 22,
+                  display: "flex",
+                  gap: 16,
+                  alignItems: "flex-start",
+                }}
+              >
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    flexShrink: 0,
+                    color: "var(--terracotta)",
+                  }}
+                >
+                  {s.icon}
                 </div>
                 <div>
-                  <h4 className="font-headline font-bold text-ocean-deep mb-1">{s.title}</h4>
-                  <p className="text-sm text-slate-500 leading-relaxed">{s.description}</p>
+                  <h4
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 500,
+                      fontSize: 16,
+                      letterSpacing: "-0.01em",
+                      margin: "0 0 4px",
+                      color: "var(--ink)",
+                    }}
+                  >
+                    {s.title}
+                  </h4>
+                  <p style={{ fontSize: 14, color: "var(--mute)", lineHeight: 1.55, margin: 0 }}>
+                    {s.description}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Contact CTA */}
-          <div className="bg-ocean-deep rounded-[1.5rem] p-6 text-center">
-            <span className="text-3xl block mb-3">👋</span>
-            <h3 className="font-headline font-bold text-white text-xl mb-2">
-              Want the full picture?
+          <div
+            style={{
+              background: "var(--ink)",
+              borderRadius: 8,
+              padding: 36,
+              textAlign: "center",
+            }}
+          >
+            <h3
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                color: "var(--cream)",
+                fontSize: 24,
+                letterSpacing: "-0.02em",
+                margin: "0 0 10px",
+                lineHeight: 1.15,
+              }}
+            >
+              Doriți toate detaliile?
             </h3>
-            <p className="text-sky-100 text-sm mb-5">
-              Contact us for service history, full inspection report, transport quote and anything else you need.
+            <p
+              style={{
+                color: "rgba(245, 241, 234, 0.7)",
+                fontSize: 15,
+                margin: "0 0 28px",
+                lineHeight: 1.55,
+                maxWidth: 460,
+                marginInline: "auto",
+              }}
+            >
+              Vă oferim istoricul complet de service, raportul de inspecție și răspunsuri la orice întrebare.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
               <a
                 href="https://wa.me/40700000000"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-buddy-green text-green-900 px-6 py-3 rounded-full font-headline font-bold hover:scale-105 transition-all shadow-lg shadow-green-900/20"
+                className="btn-primary"
+                style={{ background: "var(--terracotta)", borderColor: "var(--terracotta)" }}
               >
-                <span className="material-symbols-outlined text-base">forum</span>
-                WhatsApp Us
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                Scrie pe WhatsApp
               </a>
               <a
-                href="mailto:contact@btconcierge.ro"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border-2 border-white/20 px-6 py-3 rounded-full font-headline font-bold hover:bg-white/20 transition-all"
+                href="mailto:contact@btprime.ro"
+                className="btn-secondary"
+                style={{
+                  color: "var(--cream)",
+                  borderColor: "rgba(245, 241, 234, 0.3)",
+                }}
               >
-                <span className="material-symbols-outlined text-base">mail</span>
-                Send Email
+                Trimite Email
               </a>
             </div>
           </div>

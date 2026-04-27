@@ -32,151 +32,168 @@ export default function SearchResults({ results, onClose }: Props) {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-
-        {/* Section header — same pattern as HowItWorks / PartsService */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-buddy-green/20 text-green-700 font-bold text-sm mb-6">
-            🎉 Search complete
+    <section ref={sectionRef} className="results-section">
+      <div className="bt-container">
+        <div style={{ textAlign: "center", marginBottom: 64 }}>
+          <span
+            className="eyebrow"
+            style={{ justifyContent: "center", marginBottom: 20, display: "inline-flex" }}
+          >
+            Căutare finalizată
           </span>
-          <h2 className="font-headline text-4xl md:text-5xl font-bold text-ocean-deep mb-4">
-            We found{" "}
-            <span className="text-green-500">{results.length} cars</span> for
-            you!
+          <h2
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "clamp(40px, 5vw, 72px)",
+              lineHeight: 1,
+              letterSpacing: "-0.03em",
+              margin: "0 0 16px",
+              color: "var(--ink)",
+            }}
+          >
+            Am găsit <em>{results.length} mașini</em> pentru tine.
           </h2>
-          <p className="text-slate-500 max-w-xl mx-auto text-lg">
-            Direct from Auto1 B2B — real dealer prices, zero markup.
+          <p
+            style={{
+              fontSize: 16,
+              color: "var(--mute)",
+              maxWidth: 540,
+              margin: "0 auto",
+              lineHeight: 1.6,
+            }}
+          >
+            Direct de pe Auto1 B2B — selecție live, fără intermediari.
           </p>
         </div>
 
         {results.length === 0 ? (
-          /* Empty state */
-          <div className="bg-sky-soft rounded-[2.5rem] p-16 text-center border border-sky-100">
-            <span className="text-5xl block mb-6">🔍</span>
-            <h3 className="font-headline font-bold text-2xl text-ocean-deep mb-3">
-              No cars matched your filters
-            </h3>
-            <p className="text-slate-500 mb-8">
-              Try relaxing some criteria and search again.
-            </p>
-            <button
-              onClick={onClose}
-              className="bg-ocean-deep text-white px-8 py-3 rounded-full font-headline font-semibold hover:bg-sky-800 transition-colors cursor-pointer shadow-md shadow-sky-900/20"
+          <div
+            style={{
+              background: "var(--cream-warm)",
+              borderRadius: 8,
+              padding: 64,
+              textAlign: "center",
+              border: "1px solid var(--line)",
+            }}
+          >
+            <h3
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: 26,
+                marginBottom: 12,
+                letterSpacing: "-0.02em",
+              }}
             >
-              Try again
+              Nicio mașină nu s-a potrivit cu filtrele tale.
+            </h3>
+            <p style={{ color: "var(--mute)", marginBottom: 32 }}>
+              Încearcă să relaxezi câteva criterii și caută din nou.
+            </p>
+            <button onClick={onClose} className="btn-primary">
+              Încearcă din nou
             </button>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gap: 24,
+              }}
+            >
               {results.map((car) => (
                 <CarCard key={car.id} car={car} onClick={() => setSelectedCar(car)} />
               ))}
             </div>
-
-            {/* Bottom reset */}
-            <div className="mt-16 text-center">
-              <button
-                onClick={onClose}
-                className="inline-flex items-center gap-2 border-2 border-sky-200 text-ocean-deep px-8 py-3 rounded-full font-headline font-semibold hover:bg-sky-50 transition-colors cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-base">refresh</span>
-                Search again
+            <div style={{ marginTop: 64, textAlign: "center" }}>
+              <button onClick={onClose} className="btn-ghost">
+                Caută din nou
               </button>
             </div>
           </>
         )}
       </div>
 
-      {/* Car detail modal */}
-      {selectedCar && (
-        <CarModal car={selectedCar} onClose={() => setSelectedCar(null)} />
-      )}
+      {selectedCar && <CarModal car={selectedCar} onClose={() => setSelectedCar(null)} />}
     </section>
   );
 }
 
 function CarCard({ car, onClick }: { car: CarResult; onClick: () => void }) {
   const image = car.images?.[0];
-  const price = car.priceEur
-    ? `€${car.priceEur.toLocaleString("de-DE")}`
-    : "Price on request";
 
   return (
-    <div
-      onClick={onClick}
-      className="bg-white rounded-[2rem] border border-sky-100 overflow-hidden shadow-md shadow-sky-900/5 hover:shadow-xl hover:shadow-sky-900/10 hover:-translate-y-1 transition-all group cursor-pointer"
-    >
-
-      {/* Image */}
-      <div className="aspect-[16/10] bg-sky-soft overflow-hidden">
+    <div className="result-card" onClick={onClick}>
+      <div className="result-img">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt={car.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+          <img src={image} alt={car.title} />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-sky-200">
-            <span
-              className="material-symbols-outlined"
-              style={{ fontSize: "56px" }}
-            >
-              directions_car
-            </span>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: 200,
+            }}
+          >
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--line-strong)" strokeWidth="1">
+              <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3" />
+              <rect x="9" y="11" width="14" height="10" rx="2" />
+              <circle cx="12" cy="20" r="1" />
+              <circle cx="20" cy="20" r="1" />
+            </svg>
           </div>
         )}
       </div>
-
-      {/* Content */}
-      <div className="p-6">
-        {/* Title */}
-        <h3 className="font-headline font-bold text-ocean-deep text-lg leading-tight mb-3 line-clamp-2">
+      <div className="result-content">
+        <h3
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 500,
+            fontSize: 18,
+            letterSpacing: "-0.015em",
+            marginBottom: 8,
+            lineHeight: 1.25,
+            color: "var(--ink)",
+          }}
+        >
           {car.title}
         </h3>
 
-        {/* Price badge */}
-        <div className="inline-block bg-buddy-green/20 text-green-700 font-headline font-bold text-xl px-4 py-1 rounded-full mb-5">
-          {price}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 20, marginTop: 12 }}>
+          {car.year && <span className="spec-pill">{car.year}</span>}
+          {car.km && <span className="spec-pill">{car.km.toLocaleString("de-DE")} km</span>}
+          {car.fuel && <span className="spec-pill">{car.fuel}</span>}
+          {car.gearType && <span className="spec-pill">{car.gearType}</span>}
+          {car.hp && <span className="spec-pill">{car.hp} CP</span>}
         </div>
 
-        {/* Specs — pill tags */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {car.year && <SpecTag icon="calendar_month" label={String(car.year)} />}
-          {car.km && (
-            <SpecTag
-              icon="speed"
-              label={`${car.km.toLocaleString("de-DE")} km`}
-            />
-          )}
-          {car.fuel && <SpecTag icon="local_gas_station" label={car.fuel} />}
-          {car.gearType && <SpecTag icon="settings" label={car.gearType} />}
-          {car.hp && <SpecTag icon="bolt" label={`${car.hp} hp`} />}
-          {car.colour && <SpecTag icon="palette" label={car.colour} />}
-        </div>
-
-        {/* Click hint */}
-        <div className="flex items-center justify-center gap-2 bg-sky-soft text-ocean-deep py-3 rounded-full font-headline font-semibold text-sm group-hover:bg-ocean-deep group-hover:text-white transition-colors">
-          <span className="material-symbols-outlined text-base">open_in_full</span>
-          View details & gallery
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
+            paddingTop: 16,
+            borderTop: "1px solid var(--line)",
+            fontFamily: "var(--font-sans)",
+            fontSize: 13,
+            fontWeight: 500,
+            color: "var(--ink)",
+          }}
+        >
+          <span>Vezi detalii și galerie</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </div>
-  );
-}
-
-function SpecTag({ icon, label }: { icon: string; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1 bg-sky-soft text-ocean-deep text-xs font-semibold px-3 py-1 rounded-full">
-      <span
-        className="material-symbols-outlined"
-        style={{ fontSize: "13px", fontVariationSettings: "'opsz' 16" }}
-      >
-        {icon}
-      </span>
-      {label}
-    </span>
   );
 }

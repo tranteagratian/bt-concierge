@@ -1,78 +1,130 @@
-const steps = [
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const STEPS = [
   {
-    icon: "chat_bubble",
-    color: "bg-sky-100",
-    iconColor: "text-ocean-deep",
-    title: "1. Let's Chat",
-    description:
-      "Tell us your favorite colors, models, and budget over a quick chat.",
+    num: "PASUL 01",
+    title: "Stăm de vorbă",
+    desc: "Pe WhatsApp sau direct cu botul. Vrem să te cunoaștem.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
   },
   {
-    icon: "search",
-    color: "bg-buddy-green",
-    iconColor: "text-green-700",
-    title: "2. We Explore",
-    description:
-      "We scout the massive Auto1 platform for the hidden gems.",
+    num: "PASUL 02",
+    title: "Căutăm pentru tine",
+    desc: "Filtrăm mii de oferte din Europa. Îți trimitem doar ce merită.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    ),
   },
   {
-    icon: "verified_user",
-    color: "bg-lavender-light",
-    iconColor: "text-purple-600",
-    title: "3. We Verify",
-    description:
-      "No surprises! We check every document and mechanical detail for you.",
+    num: "PASUL 03",
+    title: "Verificăm cu lupa",
+    desc: "Istoric complet, daune, kilometraj real, fișă tehnică, mecanică.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>
+    ),
   },
   {
-    icon: "payments",
-    color: "bg-coral-soft",
-    iconColor: "text-rose-500",
-    title: "4. Tiny Fee",
-    description: "Pay our 300€ service fee only when you find 'The One'.",
+    num: "PASUL 04",
+    title: "Confirmi alegerea",
+    desc: "Plătești taxa fixă. Niciun adaos, fără surprize.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <line x1="2" y1="10" x2="22" y2="10" />
+      </svg>
+    ),
   },
   {
-    icon: "celebration",
-    color: "bg-mint-dream",
-    iconColor: "text-green-600",
-    title: "5. You Celebrate!",
-    description:
-      "Pick up your keys! We handle the final paperwork and delivery.",
+    num: "PASUL 05",
+    title: "Iei cheile acasă",
+    desc: "Mașina vine înmatriculată, cu hârtii puse la punct. Drum bun!",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="7.5" cy="15.5" r="5.5" />
+        <path d="m21 2-9.6 9.6" />
+        <path d="m15.5 7.5 3 3L22 7l-3-3" />
+      </svg>
+    ),
   },
 ];
 
 export default function HowItWorks() {
+  const [active, setActive] = useState(0);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          let i = 0;
+          setActive(0);
+          intervalRef.current = setInterval(() => {
+            i = (i + 1) % STEPS.length;
+            setActive(i);
+          }, 2000);
+        } else if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  function handleHover(i: number) {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setActive(i);
+  }
+
   return (
-    <section className="py-32 bg-white overflow-hidden" id="how-it-works">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-24">
-          <h2 className="font-headline text-4xl md:text-5xl font-bold text-ocean-deep mb-6">
-            A Playful Journey to Your New Car
+    <section className="journey" id="cum">
+      <div className="bt-container">
+        <div className="section-head reveal">
+          <div className="section-eyebrow">CUM FUNCȚIONEAZĂ</div>
+          <h2 className="section-title">
+            5 pași până la <span className="blue">cheile tale</span>
           </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-            We&apos;ve simplified the car buying process into 5 cheerful steps.
-            No stress, just success!
+          <p className="section-sub">
+            Tu ne spui ce ți-ai dori. Restul îl facem noi — pas cu pas, fără
+            bătăi de cap, fără surprize la final.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
-          {steps.map((step) => (
-            <div key={step.title} className="text-center group">
-              <div
-                className={`${step.color} w-24 h-24 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] mx-auto mb-8 flex items-center justify-center group-hover:scale-110 transition-transform`}
-              >
-                <span
-                  className={`material-symbols-outlined text-4xl ${step.iconColor}`}
-                  style={{ fontVariationSettings: "'opsz' 48" }}
-                >
-                  {step.icon}
-                </span>
-              </div>
-              <h3 className="font-headline font-bold text-xl text-ocean-deep mb-3">
-                {step.title}
-              </h3>
-              <p className="text-slate-500 text-sm px-4 leading-relaxed">
-                {step.description}
-              </p>
+        <div className="journey-grid" ref={wrapRef}>
+          {STEPS.map((s, i) => (
+            <div
+              key={i}
+              className={`journey-step${active === i ? " active" : ""}`}
+              onMouseEnter={() => handleHover(i)}
+            >
+              <div className="js-num">{s.num}</div>
+              <div className="js-icon">{s.icon}</div>
+              <h4>{s.title}</h4>
+              <p>{s.desc}</p>
             </div>
           ))}
         </div>

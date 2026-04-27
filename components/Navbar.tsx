@@ -1,41 +1,34 @@
 export default function Navbar() {
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-5xl rounded-full bg-white/80 backdrop-blur-xl border border-sky-100/50 z-50 flex justify-between items-center px-6 py-3 shadow-lg shadow-sky-900/5">
-      {/* Logo */}
-      <div className="flex items-center gap-2">
-        <div className="w-10 h-10 bg-buddy-green rounded-full flex items-center justify-center">
-          <span
-            className="material-symbols-outlined text-white text-xl"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            directions_car
+    <nav className="bt-nav">
+      <div className="bt-nav-inner">
+        <a href="/" className="logo">
+          <span className="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 17h14l-1.5-5.5a2 2 0 0 0-1.9-1.5H8.4a2 2 0 0 0-1.9 1.5L5 17Z" />
+              <path d="M5 17v2M19 17v2" />
+              <circle cx="8" cy="17" r="1.6" fill="currentColor" />
+              <circle cx="16" cy="17" r="1.6" fill="currentColor" />
+            </svg>
           </span>
+          <span>B&amp;T Concierge</span>
+        </a>
+
+        <div className="nav-links">
+          <a href="#cum">Procesul</a>
+          <a href="#preturi">Prețuri</a>
+          <a href="#servicii">Extra</a>
         </div>
-        <span className="text-xl font-headline font-bold tracking-tight text-ocean-deep">
-          B&T Concierge
-        </span>
-      </div>
 
-      {/* Links */}
-      <div className="hidden md:flex gap-8 items-center font-semibold text-ocean-deep/70">
         <a
-          href="#how-it-works"
-          className="hover:text-ocean-deep transition-colors"
+          href="https://wa.me/40700000000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="nav-cta"
         >
-          How it works
-        </a>
-        <a href="#pricing" className="hover:text-ocean-deep transition-colors">
-          Simple Pricing
-        </a>
-        <a href="#service" className="hover:text-ocean-deep transition-colors">
-          Service
+          Stai de vorbă
         </a>
       </div>
-
-      {/* CTA */}
-      <button className="bg-ocean-deep text-white px-6 py-2 rounded-full font-headline font-semibold hover:bg-sky-800 transition-all shadow-md shadow-sky-900/20 cursor-pointer">
-        Hi! Let&apos;s talk
-      </button>
     </nav>
   );
 }

@@ -1,39 +1,69 @@
 import type { Metadata } from "next";
-import { Fredoka, Quicksand } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 
-const fredoka = Fredoka({
-  variable: "--font-fredoka",
+const manrope = Manrope({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const quicksand = Quicksand({
-  variable: "--font-quicksand",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "B&T Concierge | Your Friendly Car Finder",
+  title: "Concierge auto România — Cumpără mașini second hand verificate | B&T Prime",
   description:
-    "Your personal car concierge. Find the best deals on Auto1, verify everything, and handle the paperwork — all for one transparent fee of €300.",
+    "Servicii concierge auto în România: îți cumpărăm mașina dorită din Europa, verificată complet și adusă la cheie. Economisești mii de euro fără adaos de dealer. Peste 50 de clienți mulțumiți.",
+  keywords: [
+    "concierge auto România",
+    "cumpărare mașină second hand",
+    "mașini verificate import",
+    "achiziție auto la cheie",
+    "mașină second hand din Germania",
+    "verificare istoric mașină",
+    "import auto Europa",
+    "cumpărare mașină rulată",
+  ],
+  alternates: { canonical: "https://btprime.ro/" },
+  openGraph: {
+    title: "Concierge auto România — Cumpără mașini second hand verificate",
+    description:
+      "Îți alegem, verificăm și aducem mașina perfectă din Europa. Taxă fixă, fără adaos de dealer, fără bătăi de cap. Economia medie: 3.200€.",
+    type: "website",
+    locale: "ro_RO",
+    siteName: "B&T Prime Solutions",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fredoka.variable} ${quicksand.variable}`}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    <html lang="ro" className={manrope.variable}>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "AutoDealer",
+              name: "B&T Prime Solutions",
+              description:
+                "Concierge auto pentru cumpărători individuali din România. Identificăm, verificăm și aducem la cheie mașina dorită din piețele auto europene.",
+              areaServed: "RO",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "București",
+                addressCountry: "RO",
+              },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.9",
+                reviewCount: "50",
+              },
+            }),
+          }}
         />
-      </head>
-      <body className="bg-white font-body text-text-soft antialiased">
         {children}
       </body>
     </html>
