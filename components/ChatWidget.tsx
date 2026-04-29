@@ -196,9 +196,11 @@ export default function ChatWidget({ onResults }: Props) {
       <div className="phone-screen">
         {/* Header */}
         <div className="phone-header">
-          <div className="bot-avatar-circle">B</div>
+          <div className="bot-avatar-circle">
+            <img src="/matei-bot.png" alt="Matei" />
+          </div>
           <div>
-            <div className="bot-name-text">B&T Concierge</div>
+            <div className="bot-name-text">Matei</div>
             <div className="bot-status-text">
               {step === "searching"
                 ? `Caut pe Auto1${".".repeat((pollCount % 3) + 1)}`

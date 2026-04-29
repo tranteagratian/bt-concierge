@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { MOCK_CARS } from "@/app/api/bot/search/route";
+import { MOCK_CARS } from "@/app/api/bot/_mock-cars";
 
 const EXTERNAL_BOT_URL = process.env.AUTO1_BOT_URL;
 

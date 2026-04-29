@@ -122,6 +122,16 @@ section { position: relative; }
   box-shadow: 0 6px 16px -4px rgba(0,198,110,.45);
 }
 .logo-mark svg { width: 22px; height: 22px; }
+.logo { overflow: visible; }
+.logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  display: block;
+  transform: scale(4.5);
+  transform-origin: left center;
+}
 .nav-links {
   display: flex; justify-content: center; gap: 36px;
   font-size: 14px; font-weight: 600;
@@ -263,9 +273,39 @@ section { position: relative; }
 
 /* Hero bot column */
 .hero-bot {
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: flex-start;
+  position: relative;
+  isolation: isolate;
 }
-.hero-bot .phone-mockup { max-width: 420px; width: 100%; }
+.hero-bot::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  bottom: -40px;
+  left: 450px;
+  right: calc(50% - 50vw);
+  background-image: url("/matei-wallpaper.png");
+  background-size: auto 100%;
+  background-position: 80% center;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 28%, rgba(0,0,0,1) 100%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,1) 28%, rgba(0,0,0,1) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-bot::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  bottom: -40px;
+  left: 450px;
+  right: calc(50% - 50vw);
+  background:
+    linear-gradient(to bottom, var(--cream) 0%, rgba(248,247,242,0.6) 12%, rgba(248,247,242,0) 28%, rgba(248,247,242,0) 72%, rgba(248,247,242,0.6) 88%, var(--cream) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-bot .phone-mockup { max-width: 420px; width: 100%; position: relative; z-index: 1; margin-left: 30px; }
 
 /* ─── VERIFY SECTION (report cards moved here) ─── */
 .verify { padding: 100px 0; background: white; border-top: 1px solid var(--line); }
@@ -762,13 +802,15 @@ h2.section-title .blue, h2.section-title em { color: var(--blue); }
   flex-shrink: 0;
 }
 .bot-avatar, .bot-avatar-circle {
-  width: 40px; height: 40px;
+  width: 56px; height: 56px;
   background: var(--blue); color: white;
   border-radius: 50%;
   display: grid; place-items: center;
   font-weight: 800; font-size: 14px;
   position: relative; flex-shrink: 0;
+  overflow: hidden;
 }
+.bot-avatar-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .bot-avatar::after, .bot-avatar-circle::after {
   content: "";
   position: absolute;
